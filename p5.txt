@@ -41,29 +41,48 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 5. Analiza las primeras cuatro tramas de la captura nada más arrancar Ekiga.
  ** ¿Qué servicio es el utilizado en estas tramas?
+ 	Se utiliza DNS para obtener la IP de ekiga.net
  ** ¿Cuál es la dirección IP del servidor de nombres del ordenador que ha lanzado Ekiga?
- ** ¿Qué dirección IP (de ekiga.net) devuelve el servicio de nombres?
- ** ¿Por qué se pide también para 35.162.64.86.in-addr.arpa?
+	80.58.61.250
 
+ ** ¿Qué dirección IP (de ekiga.net) devuelve el servicio de nombres?
+    86.64.162.35
+
+ ** ¿Por qué se pide también para 35.162.64.86.in-addr.arpa?
+ 	Se manda una petición inversa: dada una IP, se devolvería una dirección web)
 
 6. A continuación, hay más de una docena de tramas TCP/HTTP.
  ** ¿Podrías decir la URL que se está pidiendo?
- ** ¿Qué user agent (UA) la está pidiendo?
- ** ¿Qué devuelve el servidor?
- ** Si lanzamos el navegador web, por ejemplo, Mozilla Firefox, y vamos a la misma URL, ¿qué recibimos? ¿Qué es, entonces, lo que está respondiendo el servidor?
+ 	http://ekiga.net/ip/
 
+ ** ¿Qué user agent (UA) la está pidiendo?
+ 	ekiga
+
+ ** ¿Qué devuelve el servidor?
+ 	Un mensaje de respuesta "200 OK" con la dirección IP 83.36.48.212, que es la IP pública correspondiente a la IP privada 192.168.1.34
+
+ ** Si lanzamos el navegador web, por ejemplo, Mozilla Firefox, y vamos a la misma URL, ¿qué recibimos? ¿Qué es, entonces, lo que está respondiendo el servidor?
+	Le respuesta es la dirección IP pública desde la que se ha recibido la petición.
 
 7. Hasta la trama 45 se puede observar una secuencia de tramas del protocolo STUN.
  ** ¿Por qué crees que se hace uso de este protocolo en esta captura? Busca en la Wikipedia.
- ** ¿Estamos tras un NAT?
+    Se usa STUN porque se está usando NAT por parte de la máquina origen. Este protocolo manda peticiones desde direcciones IP a puertos diferentes para probar el tipo de NAT que se está usando
 
+ ** ¿Estamos tras un NAT?
+	Sí, nos lo indica uso de STUN y hecho de que la IP 192.168.1.34 este dentro de una red local.
 
 8. La trama 46 es la primera trama SIP. En un entorno como el de Internet, lo habitual es desconocer la dirección IP de la otra parte al realizar una llamada. Por eso, todo usuario registra su localización en un servidor Registrar. El Registrar guarda información sobre los usuarios en un servidor de localización que puede ser utilizado para localizar usuarios.
  ** ¿Qué dirección IP tiene el servidor Registrar?
- ** ¿A qué puerto (del servidor Registrar) se envían los paquetes SIP?
- ** ¿Qué método SIP utiliza el UA para registrarse?
- ** Además de REGISTER, ¿qué instrucciones SIP entiende el UA?
+ 	86.64.162.35
 
+ ** ¿A qué puerto (del servidor Registrar) se envían los paquetes SIP?
+ 	5060
+
+ ** ¿Qué método SIP utiliza el UA para registrarse?
+ 	El método REGISTER para registrarse.
+
+ ** Además de REGISTER, ¿qué instrucciones SIP entiende el UA?
+    INVITE, ACK, OPTIONS, BYE, CANCEL, NOTIFY, REFER, MESSAGE.
 
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
