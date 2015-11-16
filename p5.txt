@@ -89,25 +89,45 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 9. Fijémonos en las tramas siguientes a la número 46:
  ** ¿Se registra con éxito en el primer intento?
- ** ¿Cómo sabemos si el registro se ha realizado correctamente o no?
- ** ¿Podrías identificar las diferencias entre el primer intento y el segundo de registro? (fíjate en el tamaño de los paquetes y mira a qué se debe el cambio)
- ** ¿Cuánto es el valor del tiempo de expiración de la sesión? Indica las unidades.
+	No
 
+ ** ¿Cómo sabemos si el registro se ha realizado correctamente o no?
+ 	Si se ha registrado correctamente recicbiremos un 200 OK. En caso contrario serecibe una respueta 401 Unauthorized.
+
+ ** ¿Podrías identificar las diferencias entre el primer intento y el segundo de registro? (fíjate en el tamaño de los paquetes y mira a qué se debe el cambio)
+     El paquete correspondiente al primer intento ocupa 714 bytes frente a los 664 del segundo. Esto se debe a que en el primer intento, se incluye un campo de autenticación que no se repite en el segundo intento.
+
+ ** ¿Cuánto es el valor del tiempo de expiración de la sesión? Indica las unidades.
+ 	3600seg
 
 10. Una vez registrados, podemos efectuar una llamada. Vamos a probar con el servicio de eco de Ekiga que nos permite comprobar si nos hemos conectado correctamente. El servicio de eco tiene la dirección sip:500@ekiga.net. Veamos el INVITE de cerca.
  ** ¿Puede verse el nombre del que efectúa la llamada, así como su dirección SIP?
- ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está?
- ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes?
- ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto?
+	Si, en el campo "From". En este caso se trata Gregorio Robles con dirección sip grex@ekiga.net.
 
+ ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está?
+	El protocolo SDP, mediante el cual se realiza descripción de la sesión
+
+ ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes?
+ 	No, ya que seguidamente se recibe una respuesta SIP con un mensaje 407 Proxy Authentication error
+
+ ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto?
+	El segundo INVITE ocupa 1181 bytes frente a los 744 del primero, ya que contiene el campo Proxy Authorization en la cabecera necesario para establecer la conexión.
 
 11. Una vez conectado, estudia el intercambio de tramas.
  ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos?
- ** ¿Cuál es el tamaño de paquete de los mismos?
- ** ¿Se utilizan bits de padding?
- ** ¿Cuál es la periodicidad de los paquetes que se envían?
- ** ¿Cuántos bits/segundo estamos enviando?
+ 	Se usan RTP y RTCP. RTP se usa en el nivel de sesión para la transmisión de información en tiempo real y RTCP se encarga de proporcionar información de control sobre la calidad de la transmisión.
 
+ ** ¿Cuál es el tamaño de paquete de los mismos?
+ 	Para RTP 214 bytes y 102 para RTCP
+
+ ** ¿Se utilizan bits de padding?
+ 	No, ya que en el campo Padding aparece False.
+
+ ** ¿Cuál es la periodicidad de los paquetes que se envían?
+ 	Se puede ver comprobando el campo timestamp, y es de aproximadamente de 20ms.
+
+ ** ¿Cuántos bits/segundo estamos enviando?
+ 	64000 bits/segundo
 
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
