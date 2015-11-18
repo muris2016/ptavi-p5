@@ -1,4 +1,4 @@
- Creación de repositorio para la práctica
+﻿ Creación de repositorio para la práctica
 
 1. Con el navegador, dirígete al repositorio ptavi-p5 en la cuenta del profesor en GitHub1 y realiza un fork, de manera que consigas tener una copia del repositorio en tu cuenta de GitHub. Clona el repositorio que acabas de crear a local para poder editar los archivos. Trabaja a partir de ahora en ese repositorio, sincronizando los cambios que vayas realizando.
 
@@ -24,7 +24,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 3. Antes de analizar las tramas, mira las estadísticas generales que aparecen en el menú de Statistics. En el apartado de jerarquía de protocolos (Protocol Hierarchy) se puede ver el porcentaje del tráfico correspondiente al protocolo TCP y UDP.
  ** ¿Cuál de los dos es mayor? ¿Es esto consistente con una aplicación que transmite en tiempo real?
- 	Es mayor UDP. Es consistente ya que al ser una transmision de datos en tiempo real nos interesa UDP en lugar de TCP.
+ 	Es mayor UDP. Es consistente ya que al ser una transmisión de datos en tiempo real nos interesa UDP en lugar de TCP.
 
  ** ¿Qué otros protocolos podemos ver en la jerarquía de protocolos?
 	DNS, SIP, RTP, RTCP, HTTP, ICMP, ARP, STUN.
@@ -92,7 +92,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 	No
 
  ** ¿Cómo sabemos si el registro se ha realizado correctamente o no?
- 	Si se ha registrado correctamente recicbiremos un 200 OK. En caso contrario serecibe una respueta 401 Unauthorized.
+ 	Si se ha registrado correctamente recibiremos un 200 OK. En caso contrario se recibe una respuesta 401 Unauthorized.
 
  ** ¿Podrías identificar las diferencias entre el primer intento y el segundo de registro? (fíjate en el tamaño de los paquetes y mira a qué se debe el cambio)
      El paquete correspondiente al primer intento ocupa 714 bytes frente a los 664 del segundo. Esto se debe a que en el primer intento, se incluye un campo de autenticación que no se repite en el segundo intento.
@@ -134,7 +134,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 12. Vamos a ver más a fondo el intercambio RTP. En Telephony hay una opción RTP. Empecemos mirando los flujos RTP.
  ** ¿Cuántos flujos hay? ¿por qué?
- 	Dos flujos, uno el puerto 5014 con codificación h261, la codificacion y otro en el puerto 5010 codificado en g.711. La codificacion nos indica que son fluhos de video y audio respectivamente.
+ 	Dos flujos, uno el puerto 5014 con codificación h261, la codificación y otro en el puerto 5010 codificado en g.711. La codificación nos indica que son flujos de vídeo y audio respectivamente.
 
  ** ¿Cuántos paquetes se pierden?
  	El campo Loss es 0 en ambos flujos, por tanto no se pierden paquetes.
@@ -143,7 +143,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 	Es de 1290.48ms para un flujo y de 1290.44 para el otro. El valor de delta es el retardo de un paquete respecto al anterior.
 
  ** ¿Cuáles son los valores de jitter (medio y máximo)? ¿Qué quiere decir eso? ¿Estamos ante una conversación de calidad?
-    El valor medio es de 153.24 mientras que el maximo es de 183.10. El Jitter es la variación del retardo, por lo tanto cuanto menor sea, mejor nos podremos adaptar a ese retardo. Puesto que los valores del jitter varia mucho estamos ante una conversacion de mala calidad.
+    El valor medio es de 153.24 mientras que el maximo es de 183.10. El Jitter es la variación del retardo, por lo tanto cuanto menor sea, mejor nos podremos adaptar a ese retardo. Puesto que los valores del jitter varia mucho estamos ante una conversación de mala calidad.
 
 13. Elige un paquete RTP de audio. Analiza el flujo de audio en Telephony -> RTP -> Stream Analysis.
  ** ¿Cuánto valen el delta y el jitter para el primer paquete que ha llegado?
@@ -180,18 +180,18 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
  	En las tramas 924, 925, 927 y 933
 
  ** ¿Por qué crees que se envía varias veces?
- 	Se envian varias veces al ser UDP un protocolo no fiable podrían perderse estos paquetes BYE requests, por tanto se envian varios para asegurarse de que llega alguno.
+ 	Se envían varias veces al ser UDP un protocolo no fiable podrían perderse estos paquetes BYE requests, por tanto se envian varios para asegurarse de que llega alguno.
 
 
 16. Finalmente, se cierra la aplicación de VozIP.
  ** ¿Por qué aparece una instrucción SIP del tipo REGISTER?
- 	Para cerrar la sesion.
+ 	Para cerrar la sesión.
 
  ** ¿En qué trama sucede esto?
  	En las tramas 950 y 952.
 
  ** ¿En qué se diferencia con la instrucción que se utilizó con anterioridad (al principio de la sesión)?
- 	El campo EXPIRES tiene valor 0.
+ 	El campo EXPIRES en este caso tiene valor 0.
 
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
@@ -205,14 +205,24 @@ Captura una sesión SIP de una conversación con el número SIP sip:9999@qxip.ne
 
 17. Observa las diferencias en el inicio de la conversación entre el entorno del laboratorio y el del ejercicio anterior:
  ** ¿Es necesario el uso de DNS y STUN? ¿Por qué?
- ** ¿Son diferentes el registro y la descripción de la sesión?
+ 	Si es necesario el uso de DNS, por ejemplo para la resolución de las direcciones IP con las que queremos contactar, en captura apreciamos que aparecen paquetes DNS. No es necesario el uso de STUN ya que no estamos detrás de router NAT
 
+ ** ¿Son diferentes el registro y la descripción de la sesión?
+ 	Si, salvo por el usuario que se registra y algunos valores que cambian el campo Allow
 
 18. Identifica las diferencias existentes entre esta conversación y la conversación anterior:
  ** ¿Cuántos flujos tenemos?
+ 	Dos flujos de audio codificados en g711, uno de ida y otro de vuelta.
+
  ** ¿Cuál es su periodicidad?
+ 	20ms aproximadamente.
+
  ** ¿Cuánto es el valor máximo del delta y los valores medios y máximo del jitter?
+ 	El valor maximo de la Delta es de 322.84 en la ida y 1.17 en la vuelta. El valor maximo del jitter es 47.31 y 1222150900 y su valor medio es de 36.90 y de 3934611 para ida y vuelta respectivamente.
+
  ** ¿Podrías reproducir la conversación desde Wireshark? ¿Cómo? Comprueba que poniendo un valor demasiado pequeño para el buffer de jitter, la conversación puede no tener la calidad necesaria.
+  	Si en Telephony - VoIP calls - Seleccionar llamada - Player - Decode - Reproducir. 
+
  ** ¿Sabrías decir qué tipo de servicio ofrece sip:9999@qxip.net?
 
 
